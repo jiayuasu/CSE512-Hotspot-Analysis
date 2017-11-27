@@ -13,6 +13,7 @@ object HotcellAnalysis {
 
 def runHotcellAnalysis(spark: SparkSession, pointPath: String): DataFrame =
 {
+  println("[Hot cell]")
   // Load the original data from a data source
   var pickupInfo = spark.read.format("com.databricks.spark.csv").option("delimiter",";").option("header","false").load(pointPath);
   pickupInfo.createOrReplaceTempView("nyctaxitrips")
@@ -69,7 +70,7 @@ def runHotcellAnalysis(spark: SparkSession, pointPath: String): DataFrame =
   cellWithNeighbors.createOrReplaceTempView("cellwithgstar")
 
   // Sort the cells descending based on g star
-  cellWithNeighbors = spark.sql("select x, y, z, gstar from cellwithgstar order by gstar desc")
+  cellWithNeighbors = spark.sql("select x, y, z from cellwithgstar order by gstar desc")
 
   return cellWithNeighbors
 }
