@@ -15,6 +15,7 @@ object HotzoneAnalysis {
     println("[Hot zone]")
     var pointDf = spark.read.format("com.databricks.spark.csv").option("delimiter",";").option("header","false").load(pointPath);
     pointDf.createOrReplaceTempView("point")
+    pointDf.show()
 
     // Parse point data formats
     spark.udf.register("trim",(string : String)=>(string.replace("(", "").replace(")", "")))
